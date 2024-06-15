@@ -78,7 +78,7 @@ def get_user_byid(id: int):
     if id in user_db:
         return user_db[id]
     else:
-        raise HTTPException("User with id {} does not exist".format(id))
+        raise HTTPException(status_code=404, detail="User with id {} does not exist".format(id))
 
 
 # Delete User
@@ -89,7 +89,7 @@ def delete_user(id: int):
         return "Successfully deleted user with id {}".format(id)
 
     else:
-        raise HTTPException("User with id {} does not exist".format(id))
+        raise HTTPException(status_code=404, details=f"User with id {id} not found")
 
 
 # Update User
@@ -101,7 +101,7 @@ def update_user(id: int, user_data: FormData):
         return user_db[id]
 
     else:
-        raise HTTPException("User with id {} does not exist".format(id))
+        raise HTTPException(status_code=404, details=f"User with id {id} not found")
 
 
 # Patch Request
@@ -114,4 +114,4 @@ def partial_update_user(id: int, user_data: PartialFormData):
         return existing_user
 
     else:
-        raise HTTPException("User with id {} not found".format(id))
+        raise HTTPException(status_code=404, details=f"User with id {id} not found")
