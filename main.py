@@ -55,7 +55,9 @@ def create_user(user: FormData):
     user_dict = user.dict()
     user_dict['id'] = new_id
     user_db[new_id] = user_dict
+
     return user_dict
+
 
 
 # Get All the users
