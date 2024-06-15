@@ -1,5 +1,5 @@
 from http.client import HTTPException
-from typing import List
+from typing import List, Optional
 
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -25,6 +25,18 @@ class FormData(BaseModel):
     experience: int
     salary: float
     Certify: bool
+
+
+class PartialFormData(BaseModel):
+    FirstName: Optional[str] = None
+    LastName: Optional[str] = None
+    Email: Optional[str] = None
+    Country: Optional[str] = None
+    Phone: Optional[str] = None
+    Languages: Optional[List[str]] = None
+    experience: Optional[int] = None
+    salary: Optional[float] = None
+    Certify: Optional[bool] = None
 
 
 # Function to generate unique id
@@ -88,3 +100,15 @@ def update_user(id: int, user_data: FormData):
     else:
         raise HTTPException("User Not found")
 
+
+# Patch Request
+@app.patch("/users/{id}")
+def partial_update_user(id: int, user_data: PartialFormData):
+    if id in user_db:
+        existing_user = user_db[id]
+        update_data = user_data.dict(exclude_unset=True)
+        existing_user.update(update_data)
+        return existing_user
+
+    else:
+        raise HTTPException("User with id {} not found".format(id))
