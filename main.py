@@ -78,7 +78,7 @@ def get_user_byid(id: int):
     if id in user_db:
         return user_db[id]
     else:
-        raise HTTPException()
+        raise HTTPException("User with id {} does not exist".format(id))
 
 
 # Delete User
@@ -87,6 +87,9 @@ def delete_user(id: int):
     if id in user_db:
         del user_db[id]
         return "Successfully deleted user with id {}".format(id)
+
+    else:
+        raise HTTPException("User with id {} does not exist".format(id))
 
 
 # Update User
@@ -98,7 +101,7 @@ def update_user(id: int, user_data: FormData):
         return user_db[id]
 
     else:
-        raise HTTPException("User Not found")
+        raise HTTPException("User with id {} does not exist".format(id))
 
 
 # Patch Request
